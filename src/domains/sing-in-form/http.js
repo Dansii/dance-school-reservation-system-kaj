@@ -8,7 +8,7 @@ export const signInHttp = (username, password) => {
         let users = JSON.parse(localStorage.getItem("users"));
         users = users === null ? [] : users;
 
-        const user = users.find((currentUser) => currentUser.username === username && currentUser.password === password);
+        let user = users.find((currentUser) => currentUser.username === username && currentUser.password === password);
         let lessons = (user) ? user.lessons : [];
 
 
@@ -19,11 +19,13 @@ export const signInHttp = (username, password) => {
                     isAdmin: false,
                     lessons: lessons
                 }
-                users.push({
-                    username,
-                    password,
-                    lessons
-                });
+                if (user === null) {
+                    users.push({
+                        username,
+                        password,
+                        lessons
+                    });
+                }
                 localStorage.setItem("currentUser", JSON.stringify(currentUser));
                 localStorage.setItem("users", JSON.stringify(users));
                 resolve(currentUser);

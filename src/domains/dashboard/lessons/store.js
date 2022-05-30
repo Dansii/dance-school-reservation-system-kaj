@@ -1,5 +1,5 @@
 import {combine, createEffect, createEvent, createStore, restore, sample} from "effector";
-import {bookSlotHttp, getLessonsHttps, unbookSlotHttp} from "./http";
+import {bookSlotHttp, getLessonsHttps, removeLessonHttp, unbookSlotHttp} from "./http";
 import {$currentUser, setCurrentUser} from "../../current-user/store";
 
 export const bookSlotFx = createEffect(({username, lessonId}) => {
@@ -7,6 +7,9 @@ export const bookSlotFx = createEffect(({username, lessonId}) => {
 })
 export const unbookSlotFx = createEffect(({username, lessonId}) => {
     return unbookSlotHttp(username, lessonId);
+})
+export const removeLessonFx = createEffect(({username, lessonId}) => {
+    return removeLessonHttp(username, lessonId);
 })
 
 export const getLessonsFx = createEffect((pageNumber) => {
@@ -19,6 +22,7 @@ export const openModalForm = createEvent();
 export const closeModalForm = createEvent();
 export const bookSlotOnLesson = createEvent();
 export const unbookSlotOnLesson = createEvent();
+export const removeLesson = createEvent();
 
 
 
@@ -29,7 +33,8 @@ export const $isModalFormOpened = createStore(false)
 
 export const $currentLessonId = createStore( '')
     .on(bookSlotOnLesson, (_,id) => id)
-    .on(unbookSlotOnLesson,(_, id) => id);
+    .on(unbookSlotOnLesson,(_, id) => id)
+    .on(removeLesson, (_, id) => id);
 
 export const $pageNumber = restore(changePage, 1);
 export const $totalPages = createStore(null)
@@ -58,6 +63,12 @@ sample({
     clock: unbookSlotOnLesson,
     source: $bookSlot,
     target: unbookSlotFx,
+})
+
+sample({
+    clock: removeLesson,
+    source: $bookSlot,
+    target: removeLessonFx,
 })
 
 sample({

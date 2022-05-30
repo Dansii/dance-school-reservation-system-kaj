@@ -6,6 +6,7 @@ import Table from "@semcore/ui/table";
 import Skeleton from "@semcore/ui/skeleton";
 import MathPlusS from "@semcore/icon/MathPlus/m";
 import MathMinusS from "@semcore/icon/MathMinus/m";
+import TrashM from '@semcore/icon/Trash/m'
 import Pagination from "@semcore/ui/pagination";
 import {
     $isModalFormOpened,
@@ -15,7 +16,7 @@ import {
     changePage,
     closeModalForm,
     getLessonsFx,
-    openPageWithLessons, openModalForm, unbookSlotOnLesson
+    openPageWithLessons, openModalForm, unbookSlotOnLesson, removeLesson
 } from "./store";
 import {useStore} from "effector-react";
 import Modal from "@semcore/ui/modal";
@@ -42,7 +43,7 @@ export const Lessons = () => {
 
     useEffect(() => {
         openPageWithLessons();
-    }, [currentPage, lessons, currentUser]);
+    }, [currentPage, lessons, currentUser, isModalFormOpened]);
 
     return (
         <>
@@ -134,33 +135,47 @@ export const Lessons = () => {
                                     </Table.Cell>
                                     <Table.Cell align="right">
                                         {
-                                            currentUser.lessons.includes(row.id)
-                                            ? (
-                                                <Button
-                                                    theme="invert"
-                                                    use="primary"
-                                                    onClick={()=>{
-                                                        unbookSlotOnLesson(row.id)
-                                                    }}
-                                                >
-                                                    <Button.Addon>
-                                                        <MathMinusS/>
-                                                    </Button.Addon>
-                                                </Button>
-                                            )
-                                            : (
-                                                <Button
-                                                    theme="invert"
-                                                    use="primary"
-                                                    onClick={()=>{
-                                                        bookSlotOnLesson(row.id)
-                                                    }}
-                                                >
-                                                    <Button.Addon>
-                                                        <MathPlusS/>
-                                                    </Button.Addon>
-                                                </Button>
-                                            )
+                                            currentUser.username === adminUser.username
+                                                ? (
+                                                    <Button
+                                                        theme="invert"
+                                                        use="primary"
+                                                        onClick={()=>{
+                                                            removeLesson(row.id)
+                                                        }}
+                                                    >
+                                                        <Button.Addon>
+                                                            <TrashM/>
+                                                        </Button.Addon>
+                                                    </Button>
+                                                )
+                                                : currentUser.lessons.includes(row.id)
+                                                    ? (
+                                                        <Button
+                                                            theme="invert"
+                                                            use="primary"
+                                                            onClick={()=>{
+                                                                unbookSlotOnLesson(row.id)
+                                                            }}
+                                                        >
+                                                            <Button.Addon>
+                                                                <MathMinusS/>
+                                                            </Button.Addon>
+                                                        </Button>
+                                                    )
+                                                    : (
+                                                        <Button
+                                                            theme="invert"
+                                                            use="primary"
+                                                            onClick={()=>{
+                                                                bookSlotOnLesson(row.id)
+                                                            }}
+                                                        >
+                                                            <Button.Addon>
+                                                                <MathPlusS/>
+                                                            </Button.Addon>
+                                                        </Button>
+                                                    )
                                         }
                                     </Table.Cell>
                                 </Table.Row>

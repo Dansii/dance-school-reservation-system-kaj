@@ -69,33 +69,26 @@ export const createLessonHttp = (date, direction, lector, time, capacity, price)
         const [hours, minutes] = time.split(":");
         date.setHours(hours);
         date.setMinutes(minutes);
-        // const isUsernameExist = lessons.some((currentUser) => currentUser.username === username);
-
         setTimeout(() => {
-            // if (isUsernameExist || username === adminUser.username) {
-            //     reject("User already exits");
-            // } else {
-                lessons.push({
-                    id,
-                    direction,
-                    lector,
-                    capacity,
-                    date,
-                    time,
-                    price,
-                    freeSlots
-                });
-            console.log(lessons)
-                localStorage.setItem("lessons", JSON.stringify(lessons));
-                resolve({
-                    direction,
-                    lector,
-                    capacity,
-                    date,
-                    time,
-                    price
-                });
-            // }
+            lessons.push({
+                id,
+                direction,
+                lector,
+                capacity,
+                date,
+                time,
+                price,
+                freeSlots
+            });
+            localStorage.setItem("lessons", JSON.stringify(lessons));
+            resolve({
+                direction,
+                lector,
+                capacity,
+                date,
+                time,
+                price
+            });
         }, 500);
     })
 }

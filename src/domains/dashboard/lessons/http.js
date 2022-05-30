@@ -1,3 +1,5 @@
+import {adminUser} from "../../sing-in-form/http";
+
 export const getLessonsHttps = (pageNumber) => {
     return new Promise((resolve) => {
         let lessons = JSON.parse(localStorage.getItem("lessons"));
@@ -56,6 +58,29 @@ export const unbookSlotHttp = (username, lessonId) => {
             resolve(currentUser)
         } else {
             reject("you can't cancel this reservation")
+        }
+
+
+    })
+}
+
+export const removeLessonHttp = (username, lessonId) => {
+
+    return new Promise((resolve, reject) => {
+        let lessons = JSON.parse(localStorage.getItem("lessons"));
+        let users = JSON.parse(localStorage.getItem("users"));
+        if (username.username === adminUser.username) {
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].lessons.includes(lessonId)) {
+                    users[i].lessons = users[i].lessons.filter(lesson => lesson !== lessonId);
+                }
+            }
+            lessons = lessons.filter(lesson => lesson.id !== lessonId)
+            localStorage.setItem("users", JSON.stringify(users));
+            localStorage.setItem("lessons", JSON.stringify(lessons));
+            resolve()
+        } else {
+            reject("you can't delete this lesson")
         }
 
 

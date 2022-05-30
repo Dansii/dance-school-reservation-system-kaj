@@ -22,8 +22,8 @@ const Content = styled(Flex)`
 
 export const Dashboard = () => {
     const currentUser = useStore($currentUser)
-    const [isReservationPage, setReservationPage] = useState(true);
-    const addTodo = useCallback(() => {
+    const [isReservationPage, setReservationPage] = useState(false);
+    const changePage = useCallback(() => {
             setReservationPage((value) => !value);
     });
 
@@ -67,7 +67,7 @@ export const Dashboard = () => {
                                     <Button
                                         w="100%"
                                         h={90}
-                                        onClick={addTodo}
+                                        onClick={changePage}
                                     >
                                         {
                                             isReservationPage
